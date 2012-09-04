@@ -7,6 +7,8 @@ polyfill](https://github.com/paulirish/matchMedia.js/) for browser
 compatibility. Media queries are used to define devices, which then call event
 handlers when those devices' media queries either match or no longer match.
 
+## Basic Usage
+
 ```coffeescript
 q = new QueryEvents
 
@@ -23,19 +25,28 @@ q.hiddenOn 'desktop'
 # returns true if window is at tablet resolutions
 q.isVisible 'tablet'
 
-# this is equivalent to calling `matches` on the underlying media query
+# the above is equivalent to calling `matches` on the underlying media query
 q.devices.tablet.matches
 ```
 
-If `once: true`, then the show and hide function are called only once for each
-given device. Matchers can also be deleted.
+## Calling Matchers Only Once
+
+If `once: true`, then the show and hide functions are only called once for each
+given device.
 
 ```coffeescript
 # initialize sparklines only once at desktop resolutions
 q.visibleOn 'desktop'
   once: true
   show: -> $('.row').sparkline()
+```
 
+## Deleting Matchers
+
+Matchers can also be deleted by calling `deleteMatchers` and passing in the
+reference returned from the `visibleOn` and `hiddenOn` functions.
+
+```coffeescript
 # define new tablet and desktop matchers
 matchers = q.visibleOn 'tablet', 'desktop'
   show: (device) -> console.log "#{device} shown"
@@ -48,6 +59,8 @@ q.matcherCount 'tablet' # ⇒ 1
 q.deleteMatchers matchers
 q.matcherCount()        # ⇒ 0 
 ```
+
+## Devices
 
 By default, the following device definitions are provided:
 
